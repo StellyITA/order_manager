@@ -15,7 +15,7 @@ public class MenuItemJsonTests {
     private JacksonTester<MenuItem> json;
 
     @Test
-    void jsonSerializationTests() throws IOException {
+    void jsonSerializationTest() throws IOException {
         MenuItem testItem = new MenuItem(1, "Antipasto di terra", "starter", 18.79f, true);
         
         assertThat(json.write(testItem)).isStrictlyEqualToJson("expected.json");
