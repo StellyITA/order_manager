@@ -7,11 +7,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 
 import java.net.URI;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -22,6 +26,19 @@ public class MenuController {
 
     private MenuController(MenuRepository menuRepository) {
         this.menuRepository = menuRepository;
+    }
+
+    @GetMapping()
+    private ResponseEntity<Iterable<MenuItem>> findAll(Pageable pageable) {
+        Page page = menuRepository.findAll(
+            PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                pageable.getSortOr(Sort.by(Sort.Direction.DESC,"price"))
+            )
+        );
+
+        return ResponseEntity.ok(page.getContent());
     }
 
     @GetMapping("/{itemId}")

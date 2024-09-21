@@ -8,6 +8,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
+import net.minidev.json.JSONArray;
 
 import java.net.URI;
 
@@ -19,6 +20,66 @@ class OrderManagerApplicationTests {
 
 	@Autowired
 	TestRestTemplate testRest;
+
+	@Test
+	void shouldReturnRequestedNumberOfMenuItemsInDefaultOrder() {
+		ResponseEntity<String> response = testRest.getForEntity("/menu?page=0&size=2", String.class);
+		
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		
+		DocumentContext body = JsonPath.parse(response.getBody());
+		int size = body.read("$.length()");
+		Double price = body.read("$[1].price");
+
+		assertThat(size).isEqualTo(2);
+		assertThat(price).isEqualTo(16.79);
+	}
+
+	@Test
+	void shouldReturnSortedItemsWhenRequested() {
+		ResponseEntity<String> response = testRest.getForEntity("/menu?page=0&size=1&sort=price,asc", String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext body = JsonPath.parse(response.getBody());
+		int size = body.read("$.length()");
+		Double price = body.read("$[0].price");
+
+		assertThat(size).isEqualTo(1);
+		assertThat(price).isEqualTo(15.79);
+	}
+
+	@Test
+	void shouldReturnRequestedNumberOfMenuItems() {
+		ResponseEntity<String> response = testRest.getForEntity("/menu?page=0&size=1", String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext body = JsonPath.parse(response.getBody());
+		int size = body.read("$.length()");
+
+		assertThat(size).isEqualTo(1);
+	}
+
+	@Test
+	void shouldReturnAllMenuItemsWhenRequested() {
+		ResponseEntity<String> response = testRest.getForEntity("/menu", String.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext body = JsonPath.parse(response.getBody());
+		int size = body.read("$.length()");
+		JSONArray ids = body.read("$..dish_id");
+		JSONArray names = body.read("$..dish_name");
+		JSONArray categories = body.read("$..category");
+		JSONArray prices = body.read("$..price");
+		JSONArray availability = body.read("$..available");
+
+		assertThat(size).isEqualTo(3);
+		assertThat(ids).containsExactlyInAnyOrder(1,2,3);
+		assertThat(names).containsExactlyInAnyOrder("Antipasto di terra","Cozze alla marinara","Crudo e bufala");
+		assertThat(categories).containsExactlyInAnyOrder("starter","starter","starter");
+		assertThat(prices).containsExactlyInAnyOrder(18.79,15.79,16.79);
+		assertThat(availability).containsExactlyInAnyOrder(true,true,true);
+	}
 
 	@Test
 	void shouldReturnMenuItemWhenDataIsSaved() {
