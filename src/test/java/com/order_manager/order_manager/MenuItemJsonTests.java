@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
+import org.junit.jupiter.api.BeforeEach;
+import org.assertj.core.util.Arrays;
 
 @JsonTest
 public class MenuItemJsonTests {
@@ -14,11 +16,61 @@ public class MenuItemJsonTests {
     @Autowired
     private JacksonTester<MenuItem> json;
 
+    @Autowired
+    private JacksonTester<MenuItem[]> jsonList;
+
+    private MenuItem[] itemsList;
+
+    @BeforeEach
+    void setup() {
+        itemsList = Arrays.array(
+            new MenuItem(1,"Antipasto di terra","starter",18.79f,true),
+            new MenuItem(2,"Cozze alla marinara","starter",15.79f,true),
+            new MenuItem(3,"Crudo e bufala","starter",16.79f,true)
+        );
+    }
+
+    @Test
+    void jsonListSerializationTest() throws IOException {
+        assertThat(jsonList.write(itemsList)).isStrictlyEqualToJson("list.json");
+    }
+
+    @Test
+    void jsonListDeserializationTest() throws IOException {
+        String expected = """
+                [
+                    {
+                        "dish_id": 1,
+                        "dish_name": "Antipasto di terra",
+                        "category": "starter",
+                        "price": 18.79,
+                        "available": true
+                    },
+                    {
+                        "dish_id": 2,
+                        "dish_name": "Cozze alla marinara",
+                        "category": "starter",
+                        "price": 15.79,
+                        "available": true
+                    },
+                    {
+                        "dish_id": 3,
+                        "dish_name": "Crudo e bufala",
+                        "category": "starter",
+                        "price": 16.79,
+                        "available": true
+                    }
+                ]
+                """;
+
+        assertThat(jsonList.parse(expected)).isEqualTo(itemsList);
+    }
+
     @Test
     void jsonSerializationTest() throws IOException {
         MenuItem testItem = new MenuItem(1, "Antipasto di terra", "starter", 18.79f, true);
         
-        assertThat(json.write(testItem)).isStrictlyEqualToJson("expected.json");
+        assertThat(json.write(testItem)).isStrictlyEqualToJson("single.json");
         assertThat(json.write(testItem)).hasJsonPathNumberValue("$.dish_id");
         assertThat(json.write(testItem)).extractingJsonPathNumberValue("$.dish_id").isEqualTo(1);
         assertThat(json.write(testItem)).hasJsonPathStringValue("$.dish_name");

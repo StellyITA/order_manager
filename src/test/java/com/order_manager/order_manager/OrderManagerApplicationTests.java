@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.net.URI;
 
@@ -45,6 +46,7 @@ class OrderManagerApplicationTests {
 	}
 
 	@Test
+	@DirtiesContext
 	void shouldCreateANewMenuItem() {
 		MenuItem testItem = new MenuItem(null, "Misto di fritti", "starter", 16.79f, true);
 		ResponseEntity<Void> postResponse = testRest.postForEntity("/menu", testItem, Void.class);
