@@ -121,7 +121,7 @@ class OrderManagerApplicationTests {
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
 
-		response = testRest.withBasicAuth("username", "password").postForEntity("/menu", testItem, Void.class);
+		response = testRest.withBasicAuth("wrongname", "password").postForEntity("/menu", testItem, Void.class);
 	
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
 	}
