@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 
 import java.net.URI;
+import java.util.ArrayList;
 
 import java.util.Optional;
 
@@ -30,11 +31,14 @@ public class MenuController {
 
     @GetMapping()
     private ResponseEntity<Iterable<MenuItem>> findAll(Pageable pageable) {
-        Page page = menuRepository.findAll(
+        ArrayList<Sort.Order> sortOrderList = new ArrayList<>();
+        sortOrderList.add(new Sort.Order(Sort.Direction.DESC,"category"));
+        sortOrderList.add(new Sort.Order(Sort.Direction.DESC,"price"));
+        Page<MenuItem> page = menuRepository.findAll(
             PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
-                pageable.getSortOr(Sort.by(Sort.Direction.DESC,"price"))
+                pageable.getSortOr(Sort.by(sortOrderList))
             )
         );
 
