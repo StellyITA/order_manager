@@ -22,6 +22,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(req -> req
                                             .requestMatchers(HttpMethod.POST,"/menu")
                                             .hasRole("ADMIN")
+                                            .requestMatchers(HttpMethod.PUT,"/menu/**")
+                                            .hasRole("ADMIN")
                                             .requestMatchers(HttpMethod.GET,"/menu/**")
                                             .permitAll())
             .httpBasic(Customizer.withDefaults())
