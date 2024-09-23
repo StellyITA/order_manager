@@ -191,4 +191,38 @@ class OrderManagerApplicationTests {
 		assertThat(available).isEqualTo(false);
 	}
 
+	// DELETE
+
+	@Test
+	void shouldNotDeleteMenuItemIfUnauthorizedRole() {
+		ResponseEntity<Void> response = testRest
+			.withBasicAuth("username", "12345678")
+			.exchange("/menu/1", HttpMethod.DELETE, null, Void.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+
+		ResponseEntity<String> getResponse = testRest.getForEntity("/menu/1", String.class);
+
+		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+	}
+
+	@Test
+	void shouldNotDeleteUnexistingMenuItem() {
+		ResponseEntity<Void> response = testRest
+			.withBasicAuth("admin", "password")
+			.exchange("/menu/999", HttpMethod.DELETE, null, Void.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	@DirtiesContext
+	void shouldDeleteMenuItem() {
+		ResponseEntity<Void> response = testRest
+			.withBasicAuth("admin", "password")
+			.exchange("/menu/1", HttpMethod.DELETE, null, Void.class);
+		
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+	}
+
 }
