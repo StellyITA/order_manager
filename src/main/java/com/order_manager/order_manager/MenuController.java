@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.security.core.Authentication;
 
 @RestController
 @RequestMapping("/menu")
@@ -72,7 +71,7 @@ public class MenuController {
     }
 
     @DeleteMapping("/{itemId}")
-    private ResponseEntity<Void> deleteMenuItem(@PathVariable int itemId, Authentication auth) {
+    private ResponseEntity<Void> deleteMenuItem(@PathVariable int itemId) {
         if (menuRepository.existsById(itemId)) {
             menuRepository.delete(menuRepository.findById(itemId).get());            
 
