@@ -24,6 +24,8 @@ class OrderManagerApplicationTests {
 	@Autowired
 	TestRestTemplate testRest;
 
+	// GET
+
 	@Test
 	void shouldReturnRequestedNumberOfMenuItemsInDefaultOrder() {
 		ResponseEntity<String> response = testRest.getForEntity("/menu?page=0&size=2", String.class);
@@ -109,6 +111,8 @@ class OrderManagerApplicationTests {
 		assertThat(response.getBody()).isBlank();
 	}
 
+	// POST
+
 	@Test
 	void shouldNotCreateAnItemIfUnauthorizedRole() {
 		MenuItem testItem = new MenuItem(null, "null", "null", 0f, false);
@@ -155,6 +159,8 @@ class OrderManagerApplicationTests {
 		assertThat(price).isEqualTo(16.79);
 		assertThat(available).isEqualTo(true);
 	}
+
+	// PUT
 
 	@Test
 	void shouldNotUpdateMenuItemIfUnauthorizedRole () {
