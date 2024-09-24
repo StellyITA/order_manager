@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -29,6 +30,7 @@ public class MenuController {
         this.menuRepository = menuRepository;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000/")
     @GetMapping()
     private ResponseEntity<Iterable<MenuItem>> findAll(Pageable pageable) {
         ArrayList<Sort.Order> sortOrderList = new ArrayList<>();
