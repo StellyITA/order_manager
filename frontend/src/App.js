@@ -10,12 +10,21 @@ function App() {
   useEffect(() => {
     axios.get("http://localhost:8080/menu")
          .then((response) => {
-          setData(response.data);
+
+          let jsonRes = response.data;
+
+          jsonRes.forEach(item => {
+            if (item.dish_image != null) {
+              item.dish_image = item.dish_image.split(",").map(e => parseInt(e) >= 0 ? parseInt(e) : parseInt(e) + 256);
+              item.dish_image = "data:img/png;base64," + btoa(String.fromCharCode.apply(null, item.dish_image));
+            }
+          });
+          setData(jsonRes);
          })
          .catch(err => {
           console.log(err);
          })
-  });
+  },[]);
 
   return (
     <div className="App">
@@ -27,7 +36,9 @@ function App() {
           return (
             <MenuItem
               name={el["dish_name"]}
+              image={el["dish_image"]}
               price={el["price"]}
+              available={el["available"]}
               key={el["dish_id"]}
             />
           )

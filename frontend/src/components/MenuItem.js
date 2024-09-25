@@ -1,13 +1,13 @@
 import "./MenuItem.css"
 import placeholderImg from './antipasto-di-terra.jpg'
 
-function MenuItem({ name, price }) {
+function MenuItem({ name, image, price, available }) {
 
     return (
         <div>
-            <img src={placeholderImg} alt='placeholder' className="item-image"></img>
+            <img src={image} alt='placeholder' className="item-image"></img>
             <div>{name}</div>
-            <div>{price + " €"}</div>
+            <div>{available ? price + " €" : (<small>Not available</small>)}</div>
         </div>
     )
 }

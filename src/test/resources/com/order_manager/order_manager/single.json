@@ -1,6 +1,7 @@
 {
     "dish_id": 1,
     "dish_name": "Antipasto di terra",
+    "dish_image": null,
     "category": "starter",
     "price": 18.79,
     "available": true

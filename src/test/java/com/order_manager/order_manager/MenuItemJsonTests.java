@@ -24,9 +24,9 @@ public class MenuItemJsonTests {
     @BeforeEach
     void setup() {
         itemsList = Arrays.array(
-            new MenuItem(1,"Antipasto di terra","starter",18.79f,true),
-            new MenuItem(2,"Cozze alla marinara","starter",15.79f,true),
-            new MenuItem(3,"Crudo e bufala","starter",16.79f,true)
+            new MenuItem(1,"Antipasto di terra", null, "starter",18.79f,true),
+            new MenuItem(2,"Cozze alla marinara", null, "starter",15.79f,true),
+            new MenuItem(3,"Crudo e bufala", null, "starter",16.79f,true)
         );
     }
 
@@ -42,6 +42,7 @@ public class MenuItemJsonTests {
                     {
                         "dish_id": 1,
                         "dish_name": "Antipasto di terra",
+                        "dish_image": null,
                         "category": "starter",
                         "price": 18.79,
                         "available": true
@@ -49,6 +50,7 @@ public class MenuItemJsonTests {
                     {
                         "dish_id": 2,
                         "dish_name": "Cozze alla marinara",
+                        "dish_image": null,
                         "category": "starter",
                         "price": 15.79,
                         "available": true
@@ -56,6 +58,7 @@ public class MenuItemJsonTests {
                     {
                         "dish_id": 3,
                         "dish_name": "Crudo e bufala",
+                        "dish_image": null,
                         "category": "starter",
                         "price": 16.79,
                         "available": true
@@ -68,7 +71,7 @@ public class MenuItemJsonTests {
 
     @Test
     void jsonSerializationTest() throws IOException {
-        MenuItem testItem = new MenuItem(1, "Antipasto di terra", "starter", 18.79f, true);
+        MenuItem testItem = new MenuItem(1, "Antipasto di terra", null, "starter", 18.79f, true);
         
         assertThat(json.write(testItem)).isStrictlyEqualToJson("single.json");
         assertThat(json.write(testItem)).hasJsonPathNumberValue("$.dish_id");
@@ -89,13 +92,14 @@ public class MenuItemJsonTests {
                 {
                     "dish_id": 1,
                     "dish_name": "Antipasto di terra",
+                    "dish_image": null,
                     "category": "starter",
                     "price": 18.79,
                     "available": true
                 }
                 """;
 
-        assertThat(json.parse(expected)).isEqualTo(new MenuItem(1,"Antipasto di terra","starter",18.79f,true));
+                assertThat(json.parse(expected)).isEqualTo(new MenuItem(1,"Antipasto di terra",null,"starter",18.79f,true));
         assertThat(json.parseObject(expected).dish_id()).isEqualTo(1);
         assertThat(json.parseObject(expected).dish_name()).isEqualTo("Antipasto di terra");
         assertThat(json.parseObject(expected).category()).isEqualTo("starter");

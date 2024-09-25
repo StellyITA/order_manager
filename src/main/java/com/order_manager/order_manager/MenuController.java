@@ -60,7 +60,7 @@ public class MenuController {
 
     @PutMapping("/{itemId}")
     private ResponseEntity<Void> updateMenuItem(@PathVariable int itemId, @RequestBody MenuItem updatedItem) {
-        MenuItem toBeSaved = new MenuItem(itemId, updatedItem.dish_name(), updatedItem.category(), updatedItem.price(), updatedItem.available());
+        MenuItem toBeSaved = new MenuItem(itemId, updatedItem.dish_name(), updatedItem.dish_image(), updatedItem.category(), updatedItem.price(), updatedItem.available());
         menuRepository.save(toBeSaved);
         return ResponseEntity.noContent().build();
     }

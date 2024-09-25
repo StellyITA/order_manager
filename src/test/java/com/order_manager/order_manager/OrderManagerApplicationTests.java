@@ -83,7 +83,7 @@ class OrderManagerApplicationTests {
 		assertThat(names).containsExactlyInAnyOrder("Antipasto di terra","Cozze alla marinara","Crudo e bufala");
 		assertThat(categories).containsExactlyInAnyOrder("starter","starter","starter");
 		assertThat(prices).containsExactlyInAnyOrder(18.79,15.79,16.79);
-		assertThat(availability).containsExactlyInAnyOrder(true,true,true);
+		assertThat(availability).containsExactlyInAnyOrder(true,false,true);
 	}
 
 	@Test
@@ -101,6 +101,10 @@ class OrderManagerApplicationTests {
 		String name = responseBody.read(("$.dish_name"));
 		assertThat(name).isNotNull();
 		assertThat(name).isEqualTo("Antipasto di terra");
+
+		String img = responseBody.read("$.dish_image");
+
+		assertThat(img).isNotNull();
 	}
 
 	@Test
@@ -115,7 +119,7 @@ class OrderManagerApplicationTests {
 
 	@Test
 	void shouldNotCreateAnItemIfUnauthorizedRole() {
-		MenuItem testItem = new MenuItem(null, "null", "null", 0f, false);
+		MenuItem testItem = new MenuItem(null, "null", null, "null", 0f, false);
 		ResponseEntity<Void> response = testRest.withBasicAuth("username", "12345678").postForEntity("/menu", testItem, Void.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
@@ -123,7 +127,7 @@ class OrderManagerApplicationTests {
 
 	@Test
 	void shouldNotCreateAnItemIfWrongCredentials() {
-		MenuItem testItem = new MenuItem(null, "null", "null", 0f, false);
+		MenuItem testItem = new MenuItem(null, "null", null, "null", 0f, false);
 		ResponseEntity<Void> response = testRest.withBasicAuth("admin", "wrongpassword").postForEntity("/menu", testItem, Void.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
@@ -136,7 +140,7 @@ class OrderManagerApplicationTests {
 	@Test
 	@DirtiesContext
 	void shouldCreateANewMenuItem() {
-		MenuItem testItem = new MenuItem(null, "Misto di fritti", "starter", 16.79f, true);
+		MenuItem testItem = new MenuItem(null, "Misto di fritti", null, "starter", 16.79f, true);
 		ResponseEntity<Void> postResponse = testRest.withBasicAuth("admin", "password").postForEntity("/menu", testItem, Void.class);
 
 		assertThat(postResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -164,7 +168,7 @@ class OrderManagerApplicationTests {
 
 	@Test
 	void shouldNotUpdateMenuItemIfUnauthorizedRole () {
-		MenuItem testItem = new MenuItem(null, "null", "null", 0f, false);
+		MenuItem testItem = new MenuItem(null, "null", null, "null", 0f, false);
 		HttpEntity<MenuItem> request = new HttpEntity<>(testItem);
 		ResponseEntity<Void> response = testRest
 			.withBasicAuth("username", "12345678")
@@ -176,7 +180,7 @@ class OrderManagerApplicationTests {
 	@Test
 	@DirtiesContext
 	void shouldUpdateMenuItem() {
-		MenuItem testItem = new MenuItem(null, "Antipasto di terra", "starter", 18.79f, false);
+		MenuItem testItem = new MenuItem(null, "Antipasto di terra", null, "starter", 18.79f, false);
 		HttpEntity<MenuItem> request = new HttpEntity<>(testItem);
 		ResponseEntity<Void> response = testRest
 			.withBasicAuth("admin", "password")
