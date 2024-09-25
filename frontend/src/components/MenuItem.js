@@ -1,13 +1,24 @@
 import "./MenuItem.css"
-import placeholderImg from './antipasto-di-terra.jpg'
 
 function MenuItem({ name, image, price, available }) {
 
+    let priceString = price.toString();
+    
+    if (priceString.match(/\.\d$/) != null) {
+        priceString += "0 €";
+    } else if (priceString.match(/\./) == null) {
+        priceString += ".00 €";
+    } else {
+        priceString += " €";
+    }
+
     return (
-        <div>
-            <img src={image} alt='placeholder' className="item-image"></img>
+        <div className="menu-item">
+            <img src={image} alt={name + " thumbnail"} className="item-image"></img>
             <div>{name}</div>
-            <div>{available ? price + " €" : (<small>Not available</small>)}</div>
+            <div className="price">
+                <small>{available ? priceString : "Not available"}</small>
+            </div>
         </div>
     )
 }
