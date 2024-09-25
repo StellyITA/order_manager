@@ -1,5 +1,14 @@
 .item-image {
-    max-width: 90%;
+    max-width: 100%;
     max-height: auto;
-    margin: 10px;
+}
+
+.price {
+    text-align: right;
+    margin-right: 5px;
+}
+
+.menu-item {
+    background-color: white;
+    margin: 5px;
 }
