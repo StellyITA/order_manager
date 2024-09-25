@@ -1,3 +1,3 @@
 INSERT INTO MENU_ITEM(DISH_NAME, DISH_IMAGE, CATEGORY, PRICE, AVAILABLE) VALUES('Antipasto di terra', FILE_READ('classpath:images/antipasto-di-terra.png'), 'starter', 18.79, TRUE);
-INSERT INTO MENU_ITEM(DISH_NAME, CATEGORY, PRICE, AVAILABLE) VALUES('Cozze alla marinara', 'starter', 15.79, TRUE);
-INSERT INTO MENU_ITEM(DISH_NAME, CATEGORY, PRICE, AVAILABLE) VALUES('Crudo e bufala', 'starter', 16.79, FALSE);
+INSERT INTO MENU_ITEM(DISH_NAME, DISH_IMAGE, CATEGORY, PRICE, AVAILABLE) VALUES('Cozze alla marinara', FILE_READ('classpath:images/cozze-alla-marinara.png'), 'starter', 15.79, TRUE);
+INSERT INTO MENU_ITEM(DISH_NAME, DISH_IMAGE, CATEGORY, PRICE, AVAILABLE) VALUES('Crudo e bufala', FILE_READ('classpath:images/crudo-e-bufala.png'), 'starter', 16.79, FALSE);
