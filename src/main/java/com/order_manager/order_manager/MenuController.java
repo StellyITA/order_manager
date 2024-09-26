@@ -75,9 +75,30 @@ public class MenuController {
 
     @PutMapping("/{itemId}")
     private ResponseEntity<Void> updateMenuItem(@PathVariable int itemId, @RequestBody MenuItem updatedItem) {
-        MenuItem toBeSaved = new MenuItem(itemId, updatedItem.dish_name(), updatedItem.dish_image(), updatedItem.category(), updatedItem.price(), updatedItem.available());
-        menuRepository.save(toBeSaved);
-        return ResponseEntity.noContent().build();
+        Optional<MenuItem> currentOptional = menuRepository.findById(itemId);
+        
+        if (currentOptional.isPresent()) {
+            
+            MenuItem current = currentOptional.get();
+            String name = updatedItem.dish_name() == null ? current.dish_name() : updatedItem.dish_name();
+            String image = updatedItem.dish_image() == null ? current.dish_image() : updatedItem.dish_image();
+            Integer category = updatedItem.category() == null ? current.category() : updatedItem.category();
+            Float price = updatedItem.price() == null ? current.price() : updatedItem.price();
+            boolean available = updatedItem.available() == null ? current.available() : updatedItem.available();
+        
+            MenuItem toBeSaved = new MenuItem(
+                itemId, 
+                name, 
+                image, 
+                category, 
+                price, 
+                available
+            );
+            menuRepository.save(toBeSaved);
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping

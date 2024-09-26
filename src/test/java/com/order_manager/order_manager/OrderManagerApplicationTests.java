@@ -206,8 +206,10 @@ class OrderManagerApplicationTests {
 		ResponseEntity<String> getResponse = testRest.getForEntity("/menu/1", String.class);
 		DocumentContext body = JsonPath.parse(getResponse.getBody());
 		boolean available = body.read("$.available");
+		String img = body.read("$.dish_image");
 
 		assertThat(available).isEqualTo(false);
+		assertThat(img).isNotNull();
 	}
 
 	// DELETE
