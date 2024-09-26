@@ -41,7 +41,6 @@ class OrderManagerApplicationTests {
 	}
 
 	@Test
-	// TODO: add some more assertions
 	void shouldReturnRequestedNumberOfMenuItemsInDefaultOrder() {
 		ResponseEntity<String> response = testRest.getForEntity("/menu?page=0&size=2", String.class);
 		
@@ -96,7 +95,7 @@ class OrderManagerApplicationTests {
 		assertThat(size).isEqualTo(6);
 		assertThat(ids).containsExactlyInAnyOrder(1,2,3,4,5,6);
 		assertThat(names).containsExactlyInAnyOrder("Antipasto di terra","Cozze alla marinara","Crudo e bufala","Carbonara","Noci, gorgonzola e radicchio","Pescatora");
-		assertThat(categories).containsExactlyInAnyOrder(1,1,1,2,2,2);
+		assertThat(categories).containsExactly(1,1,1,2,2,2);
 		assertThat(prices).containsExactlyInAnyOrder(18.8,15.0,16.79,17.8,19.8,16.8);
 		assertThat(availability).containsExactlyInAnyOrder(true,false,true,true,true,true);
 	}
