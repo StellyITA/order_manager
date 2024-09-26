@@ -3,7 +3,7 @@
         "dish_id": 1,
         "dish_name": "Antipasto di terra",
         "dish_image": null,
-        "category": "starter",
+        "category": 1,
         "price": 18.79,
         "available": true
     },
@@ -11,7 +11,7 @@
         "dish_id": 2,
         "dish_name": "Cozze alla marinara",
         "dish_image": null,
-        "category": "starter",
+        "category": 1,
         "price": 15.79,
         "available": true
     },
@@ -19,7 +19,7 @@
         "dish_id": 3,
         "dish_name": "Crudo e bufala",
         "dish_image": null,
-        "category": "starter",
+        "category": 1,
         "price": 16.79,
         "available": true
     }

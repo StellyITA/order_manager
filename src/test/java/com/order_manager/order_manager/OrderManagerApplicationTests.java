@@ -28,7 +28,7 @@ class OrderManagerApplicationTests {
 
 	@Test
 	void shouldReturnItemsOfRequestedCategory() {
-		ResponseEntity<String> response = testRest.getForEntity("/menu/categories/starter", String.class);
+		ResponseEntity<String> response = testRest.getForEntity("/menu/categories/1", String.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -95,7 +95,7 @@ class OrderManagerApplicationTests {
 		assertThat(size).isEqualTo(3);
 		assertThat(ids).containsExactlyInAnyOrder(1,2,3);
 		assertThat(names).containsExactlyInAnyOrder("Antipasto di terra","Cozze alla marinara","Crudo e bufala");
-		assertThat(categories).containsExactlyInAnyOrder("starter","starter","starter");
+		assertThat(categories).containsExactlyInAnyOrder(1,1,1);
 		assertThat(prices).containsExactlyInAnyOrder(18.8,15.0,16.79);
 		assertThat(availability).containsExactlyInAnyOrder(true,false,true);
 	}
@@ -133,7 +133,7 @@ class OrderManagerApplicationTests {
 
 	@Test
 	void shouldNotCreateAnItemIfUnauthorizedRole() {
-		MenuItem testItem = new MenuItem(null, "null", null, "null", 0f, false);
+		MenuItem testItem = new MenuItem(null, "null", null, 1, 0f, false);
 		ResponseEntity<Void> response = testRest.withBasicAuth("username", "12345678").postForEntity("/menu", testItem, Void.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
@@ -141,7 +141,7 @@ class OrderManagerApplicationTests {
 
 	@Test
 	void shouldNotCreateAnItemIfWrongCredentials() {
-		MenuItem testItem = new MenuItem(null, "null", null, "null", 0f, false);
+		MenuItem testItem = new MenuItem(null, "null", null, 1, 0f, false);
 		ResponseEntity<Void> response = testRest.withBasicAuth("admin", "wrongpassword").postForEntity("/menu", testItem, Void.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
@@ -154,7 +154,7 @@ class OrderManagerApplicationTests {
 	@Test
 	@DirtiesContext
 	void shouldCreateANewMenuItem() {
-		MenuItem testItem = new MenuItem(null, "Misto di fritti", null, "starter", 16.79f, true);
+		MenuItem testItem = new MenuItem(null, "Misto di fritti", null, 1, 16.79f, true);
 		ResponseEntity<Void> postResponse = testRest.withBasicAuth("admin", "password").postForEntity("/menu", testItem, Void.class);
 
 		assertThat(postResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -167,13 +167,13 @@ class OrderManagerApplicationTests {
 		DocumentContext responseBody = JsonPath.parse(getResponse.getBody());
 		Number id = responseBody.read("$.dish_id");
 		String name = responseBody.read("$.dish_name");
-		String category = responseBody.read("$.category");
+		Number category = responseBody.read("$.category");
 		Number price = responseBody.read("$.price");
 		boolean available = responseBody.read("$.available");
 		
 		assertThat(id).isNotNull();
 		assertThat(name).isEqualTo("Misto di fritti");
-		assertThat(category).isEqualTo("starter");
+		assertThat(category).isEqualTo(1);
 		assertThat(price).isEqualTo(16.79);
 		assertThat(available).isEqualTo(true);
 	}
@@ -182,7 +182,7 @@ class OrderManagerApplicationTests {
 
 	@Test
 	void shouldNotUpdateMenuItemIfUnauthorizedRole () {
-		MenuItem testItem = new MenuItem(null, "null", null, "null", 0f, false);
+		MenuItem testItem = new MenuItem(null, "null", null, 1, 0f, false);
 		HttpEntity<MenuItem> request = new HttpEntity<>(testItem);
 		ResponseEntity<Void> response = testRest
 			.withBasicAuth("username", "12345678")
@@ -194,7 +194,7 @@ class OrderManagerApplicationTests {
 	@Test
 	@DirtiesContext
 	void shouldUpdateMenuItem() {
-		MenuItem testItem = new MenuItem(null, "Antipasto di terra", null, "starter", 18.79f, false);
+		MenuItem testItem = new MenuItem(null, "Antipasto di terra", null, 1, 18.79f, false);
 		HttpEntity<MenuItem> request = new HttpEntity<>(testItem);
 		ResponseEntity<Void> response = testRest
 			.withBasicAuth("admin", "password")
