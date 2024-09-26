@@ -35,7 +35,7 @@ public class MenuController {
     @GetMapping()
     private ResponseEntity<Iterable<MenuItem>> findAll(Pageable pageable) {
         ArrayList<Sort.Order> sortOrderList = new ArrayList<>();
-        sortOrderList.add(new Sort.Order(Sort.Direction.DESC,"category"));
+        sortOrderList.add(new Sort.Order(Sort.Direction.ASC,"category"));
         sortOrderList.add(new Sort.Order(Sort.Direction.DESC,"price"));
         Page<MenuItem> page = menuRepository.findAll(
             PageRequest.of(
