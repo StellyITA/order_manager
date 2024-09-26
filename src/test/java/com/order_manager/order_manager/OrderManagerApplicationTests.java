@@ -26,6 +26,22 @@ class OrderManagerApplicationTests {
 
 	// GET
 
+		// Categories
+
+	@Test
+	void shouldReturnAllCategories() {
+		ResponseEntity<String> response = testRest.getForEntity("/menu/categories", String.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext body = JsonPath.parse(response.getBody());
+		int size = body.read("$.length()");
+		JSONArray names = body.read("$..category_name");
+
+		assertThat(size).isEqualTo(8);
+		assertThat(names).containsExactly("Antipasti", "Primi piatti", "Secondi di carne", "Secondi di pesce", "Contorni", "Dessert", "Bevande", "Caffè e amari");
+	}
+
 	@Test
 	void shouldReturnItemsOfRequestedCategory() {
 		ResponseEntity<String> response = testRest.getForEntity("/menu/categories/1", String.class);
@@ -39,6 +55,8 @@ class OrderManagerApplicationTests {
 		assertThat(size).isEqualTo(3);
 		assertThat(price).isEqualTo(18.8);
 	}
+
+		// Menu items
 
 	@Test
 	void shouldReturnRequestedNumberOfMenuItemsInDefaultOrder() {

@@ -26,9 +26,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class MenuController {
 
     private final MenuRepository menuRepository;
+    private final CategoryRepository categoryRepository;
 
-    private MenuController(MenuRepository menuRepository) {
+    private MenuController(MenuRepository menuRepository, CategoryRepository categoryRepository) {
         this.menuRepository = menuRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @CrossOrigin(origins = "http://localhost:3000/")
@@ -46,6 +48,20 @@ public class MenuController {
         );
 
         return ResponseEntity.ok(page.getContent());
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000/")
+    @GetMapping("/categories")
+    private ResponseEntity<Iterable<Category>> findAllCategories(Pageable pageable) {
+        Page<Category> categoriesList = categoryRepository.findAll(
+            PageRequest.of(
+                pageable.getPageNumber(), 
+                pageable.getPageSize(), 
+                pageable.getSortOr(Sort.by(Direction.ASC, "category_id"))
+            )
+        );
+
+        return ResponseEntity.ok(categoriesList.getContent());
     }
 
     @CrossOrigin(origins = "http://localhost:3000/")
