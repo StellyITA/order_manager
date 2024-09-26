@@ -27,6 +27,20 @@ class OrderManagerApplicationTests {
 	// GET
 
 	@Test
+	void shouldReturnItemsOfRequestedCategory() {
+		ResponseEntity<String> response = testRest.getForEntity("/menu/categories/starter", String.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext body = JsonPath.parse(response.getBody());
+		int size = body.read("$.length()");
+		double price = body.read("$[0].price");
+
+		assertThat(size).isEqualTo(3);
+		assertThat(price).isEqualTo(18.8);
+	}
+
+	@Test
 	void shouldReturnRequestedNumberOfMenuItemsInDefaultOrder() {
 		ResponseEntity<String> response = testRest.getForEntity("/menu?page=0&size=2", String.class);
 		
@@ -50,7 +64,7 @@ class OrderManagerApplicationTests {
 		Double price = body.read("$[0].price");
 
 		assertThat(size).isEqualTo(1);
-		assertThat(price).isEqualTo(15.79);
+		assertThat(price).isEqualTo(15);
 	}
 
 	@Test
@@ -82,7 +96,7 @@ class OrderManagerApplicationTests {
 		assertThat(ids).containsExactlyInAnyOrder(1,2,3);
 		assertThat(names).containsExactlyInAnyOrder("Antipasto di terra","Cozze alla marinara","Crudo e bufala");
 		assertThat(categories).containsExactlyInAnyOrder("starter","starter","starter");
-		assertThat(prices).containsExactlyInAnyOrder(18.79,15.79,16.79);
+		assertThat(prices).containsExactlyInAnyOrder(18.8,15.0,16.79);
 		assertThat(availability).containsExactlyInAnyOrder(true,false,true);
 	}
 

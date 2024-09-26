@@ -8,7 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -41,6 +42,20 @@ public class MenuController {
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
                 pageable.getSortOr(Sort.by(sortOrderList))
+            )
+        );
+
+        return ResponseEntity.ok(page.getContent());
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000/")
+    @GetMapping("/categories/{category}")
+    private ResponseEntity<Iterable<MenuItem>> findByCategory(@PathVariable String category, Pageable pageable) {
+        Page<MenuItem> page = menuRepository.findByCategory(category,
+            PageRequest.of(
+                pageable.getPageNumber(), 
+                pageable.getPageSize(),
+                pageable.getSortOr(Sort.by(Direction.DESC, "price"))
             )
         );
 
