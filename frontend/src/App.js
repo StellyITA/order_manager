@@ -26,11 +26,6 @@ function App() {
     setCategories(categories);
   }
 
-  useEffect(() => {
-    getMenu();
-    getCategories();
-  },[]);
-
   function handleCategoryClick(event, category) {
     const prev = document.getElementById('active');
     prev.setAttribute("id",null);
@@ -39,6 +34,11 @@ function App() {
     event.target.className = "active";
     setCurrentCategory(category);
   }
+
+  useEffect(() => {
+    getMenu();
+    getCategories();
+  },[]);
 
   return (
     <div className="App">
