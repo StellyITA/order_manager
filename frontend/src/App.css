@@ -20,6 +20,32 @@ body {
   color: #61dafb;
 }
 
+.categories {
+  background-color: white;
+  display: flex;
+}
+
+.categories > button {
+  flex-grow: 1;
+  border: none;
+  color: #1f1512;
+  border-top: 1px solid #7c542b;
+  border-bottom: 1px solid #bb8343;
+  border-left: 1px solid #bb8343;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: #f2c685;
+}
+
+.categories > button.active {
+  border-bottom: none;
+  background-color: #ffe9b6;
+}
+
+.categories > button.unactive:hover {
+  background-color: #e6a85c;
+}
+
 .display-menu {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
