@@ -16,6 +16,7 @@ function MenuItem({ name, image, price, available }) {
         <div className="menu-item">
             <img src={image} alt={name + " thumbnail"} className="item-image"></img>
             <div>{name}</div>
+            <br/>
             <div className="price">
                 <small>{available ? priceString : "Not available"}</small>
             </div>
