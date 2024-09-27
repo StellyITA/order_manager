@@ -6,8 +6,11 @@ import axios from 'axios';
 function App() {
 
   const [data, setData] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
+
+    // GET menu items
     axios.get("http://localhost:8080/menu")
          .then((response) => {
 
@@ -24,6 +27,15 @@ function App() {
          .catch(err => {
           console.log(err);
          })
+
+    // GET categories
+    axios.get("http://localhost:8080/menu/categories")
+         .then((response) => {
+          setCategories(response.data);
+         })
+         .catch(err => {
+          console.log(err);
+         })
   },[]);
 
   return (
@@ -31,6 +43,14 @@ function App() {
       <header className="App-header">
         Header
       </header>
+      <div>
+        <button>Tutte le categorie</button>
+        {categories.map(el => {
+          return (
+            <button>{el.category_name}</button>
+          )
+        })}
+      </div>
       <div className='display-menu'>
       {data.map(el => {
           return (
