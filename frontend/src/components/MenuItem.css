@@ -1,6 +1,11 @@
 .item-image {
-    max-width: 100%;
-    max-height: auto;
+    display: block;
+    object-fit: cover;
+    width: 100%;
+    height: 68%;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .price {
@@ -11,4 +16,6 @@
 .menu-item {
     background-color: white;
     margin: 5px;
+    padding-top: 68%;
+    position: relative;
 }
