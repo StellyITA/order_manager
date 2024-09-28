@@ -27,5 +27,22 @@
 
 .name {
     position: relative;
-    top: 25%;
+    top: 10%;
+}
+
+.quantity-btn {
+    font-size: 1.75vmin;
+    color: gray;
+    box-sizing: border-box;
+    border: 1px solid grey;
+    border-radius: 50%;
+    width: 15%;
+    aspect-ratio: 1;
+    position: absolute;
+    bottom: 2px;
+    left: 25%
+}
+
+.add {
+    left: 5%;
 }

@@ -1,4 +1,6 @@
 import './App.css';
+
+import OrderItem from './components/OrderItem';
 import MenuItem from './components/MenuItem';
 import { useState, useEffect } from 'react';
 import { menuItemsData, categoriesData } from './Data';
@@ -6,6 +8,7 @@ import { menuItemsData, categoriesData } from './Data';
 function App() {
 
   const [data, setData] = useState([]);
+  const [orderData, setOrderData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [currentCategory, setCurrentCategory] = useState(0);
 
@@ -17,6 +20,7 @@ function App() {
         item.dish_image = item.dish_image.split(",").map(e => parseInt(e) >= 0 ? parseInt(e) : parseInt(e) + 256);
         item.dish_image = "data:img/png;base64," + btoa(String.fromCharCode.apply(null, item.dish_image));
       }
+      item.quantity = 0;
     });
     setData(menuData);
   }
@@ -28,11 +32,30 @@ function App() {
 
   function handleCategoryClick(event, category) {
     const prev = document.getElementById('active');
-    prev.setAttribute("id",null);
+    prev.removeAttribute("id");
     prev.setAttribute("class","unactive");
     event.target.id = 'active';
     event.target.className = "active";
     setCurrentCategory(category);
+  }
+
+  function changeQuantity(event) {
+    const id = event.target.parentNode.parentNode.id;
+    let newData = JSON.parse(JSON.stringify(data));
+
+    let i = 0;
+    while(i < newData.length && newData[i]["dish_id"] !== parseInt(id)) {
+      i++;
+    }
+
+    if (event.target.className.match("add") !== null) {
+      newData[i]["quantity"]++;
+    } else {
+      newData[i]["quantity"]--;
+    }
+
+    setData(newData);
+    setOrderData(newData.filter(el => el["quantity"] > 0));
   }
 
   useEffect(() => {
@@ -68,11 +91,14 @@ function App() {
               if (currentCategory === 0 || el["category"] === currentCategory) {
                 return (
                   <MenuItem
+                    id={el["dish_id"]}
                     name={el["dish_name"]}
                     image={el["dish_image"]}
                     price={el["price"]}
                     available={el["available"]}
+                    quantity={el["quantity"]}
                     key={el["dish_id"]}
+                    setQuantity={changeQuantity}
                   />
                 )
               } else {
@@ -80,7 +106,20 @@ function App() {
               }
           })}
         </div>
-        <div className='order'>Order</div>
+        <div id='order' className='order'>
+          Ordine
+          {orderData.map(el => {
+            return (
+              <OrderItem
+                id={el["dish_id"]}
+                quantity={el["quantity"]}
+                name={el["dish_name"]}
+                price={el["price"]}
+                key={el["dish_name"] + el["dish_id"]}
+              />
+            )
+          })}
+        </div>
       </div>
     </div>
   );
