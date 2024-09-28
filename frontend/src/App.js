@@ -4,6 +4,7 @@ import OrderItem from './components/OrderItem';
 import MenuItem from './components/MenuItem';
 import { useState, useEffect } from 'react';
 import { menuItemsData, categoriesData } from './Data';
+import { formatPriceString } from './UtilityFunctions';
 
 function App() {
 
@@ -119,6 +120,13 @@ function App() {
               />
             )
           })}
+          <p className="total">
+            <span className="total-text">Total:</span>
+            <span className="total-price">{(orderData.length > 0) 
+            ? formatPriceString(orderData.reduce((acc,current) => 
+              acc + current["price"] * current["quantity"], 0)) 
+            : ""}</span>
+            </p>
         </div>
       </div>
     </div>

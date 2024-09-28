@@ -59,6 +59,7 @@ body {
 }
 
 .order {
+  position: relative;
   background-color: white;
   align-self: stretch;
   width: 100%;
@@ -68,4 +69,26 @@ body {
   grid-column-end: 11;
   grid-row-start: 1;
   grid-row-end: 6;
+}
+
+.total {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  border-top: 1px solid gray;
+  font-size: x-large;
+  position: absolute;
+  bottom: 0;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.total-text {
+  text-align: left;
+}
+
+.total-price {
+  text-align: right;
 }
