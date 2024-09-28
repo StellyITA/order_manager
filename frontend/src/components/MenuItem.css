@@ -2,7 +2,7 @@
     display: block;
     object-fit: cover;
     width: 100%;
-    height: 68%;
+    height: 59%;
     position: absolute;
     top: 0;
     left: 0;
@@ -19,6 +19,13 @@
 .menu-item {
     background-color: white;
     margin: 5px;
-    padding-top: 68%;
+    padding-top: 59%;
+    height: 10vh;
     position: relative;
+    font-size: 2vmin;
+}
+
+.name {
+    position: relative;
+    top: 25%;
 }

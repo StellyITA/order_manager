@@ -62,22 +62,25 @@ function App() {
           )
         })}
       </div>
-      <div className='display-menu'>
-        {data.map(el => {
-            if (currentCategory === 0 || el["category"] === currentCategory) {
-              return (
-                <MenuItem
-                  name={el["dish_name"]}
-                  image={el["dish_image"]}
-                  price={el["price"]}
-                  available={el["available"]}
-                  key={el["dish_id"]}
-                />
-              )
-            } else {
-              return null;
-            }
-        })}
+      <div className='order-manager'>
+        <div className='display-menu'>
+          {data.map(el => {
+              if (currentCategory === 0 || el["category"] === currentCategory) {
+                return (
+                  <MenuItem
+                    name={el["dish_name"]}
+                    image={el["dish_image"]}
+                    price={el["price"]}
+                    available={el["available"]}
+                    key={el["dish_id"]}
+                  />
+                )
+              } else {
+                return null;
+              }
+          })}
+        </div>
+        <div className='order'>Order</div>
       </div>
     </div>
   );
