@@ -8,6 +8,7 @@ import { formatPriceString } from './UtilityFunctions';
 
 function App() {
 
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [orderData, setOrderData] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -24,6 +25,7 @@ function App() {
       item.quantity = 0;
     });
     setData(menuData);
+    setLoading(false);
   }
 
   async function getCategories() {
@@ -87,7 +89,7 @@ function App() {
         })}
       </div>
       <div className='order-manager'>
-        <div className='display-menu'>
+        {loading ? <div className="loader"/> : (<div className='display-menu'>
           {data.map(el => {
               if (currentCategory === 0 || el["category"] === currentCategory) {
                 return (
@@ -106,7 +108,7 @@ function App() {
                 return null;
               }
           })}
-        </div>
+        </div>)}
         <div id='order' className='order'>
           Ordine
           {orderData.map(el => {
