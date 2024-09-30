@@ -1,16 +1,38 @@
 .order-item {
     display: grid;
-    grid-template-columns: repeat(5,1fr);
+    grid-template-columns: repeat(8,1fr);
     border-top: 1px solid gray;
     padding: 10px;
     margin: 0;
 }
 
-.order-item-* {
-    align-self: center;
+.order-item-quantity {
+    place-self: center;
+}
+
+.order-item-quantity-input {
+    min-width: 0;
 }
 
 .order-item-name {
-    grid-column-start: 2;
-    grid-column-end: 5;
+    grid-column-start: 3;
+    grid-column-end: 7;
+    place-self: center;
+}
+
+.order-item-price {
+    font-size: 2.23vmin;
+    place-self: center;
+}
+
+.order-item-edit, .order-item-delete {
+    width: 65%;
+    place-self: center;
+}
+
+.order-item-delete {
+    background-color: #ed3a2e;
+    border: 1px solid #771d17;
+    color: white;
+    border-radius: 4px;
 }

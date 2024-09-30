@@ -43,7 +43,7 @@ function App() {
   }
 
   function changeQuantity(event) {
-    const id = event.target.parentNode.parentNode.id;
+    const id = event.target.parentNode.id;
     let newData = JSON.parse(JSON.stringify(data));
 
     let i = 0;
@@ -53,8 +53,12 @@ function App() {
 
     if (event.target.className.match("add") !== null) {
       newData[i]["quantity"]++;
-    } else {
+    } else if (event.target.className.match("subtract") !== null) {
       newData[i]["quantity"]--;
+    } else if (event.target.className.match("quantity-input") !== null) {
+      newData[i]["quantity"] = event.target.value;
+    } else if (event.target.className.match("delete") !== null) {
+      newData[i]["quantity"] = 0;
     }
 
     setData(newData);
@@ -118,6 +122,7 @@ function App() {
                 quantity={el["quantity"]}
                 name={el["dish_name"]}
                 price={el["price"]}
+                handleChange={changeQuantity}
                 key={el["dish_name"] + el["dish_id"]}
               />
             )
