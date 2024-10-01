@@ -63,7 +63,17 @@ function App() {
       newData[i]["quantity"] = 0;
     }
 
+    let newFilterData = JSON.parse(JSON.stringify(filterData));
+
+    let j = 0;
+    while(j < newFilterData.length && newFilterData[j]["dish_id"] !== parseInt(id)) {
+      j++;
+    }
+
+    newFilterData[j].quantity = newData[i].quantity;
+
     setData(newData);
+    setFilter(newFilterData);
     setOrderData(newData.filter(el => el["quantity"] > 0));
   }
 
