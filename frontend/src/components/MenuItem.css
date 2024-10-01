@@ -33,6 +33,7 @@
 .quantity-btn {
     font-size: 1.75vmin;
     color: gray;
+    background-color: #ddddff;
     box-sizing: border-box;
     border: 1px solid grey;
     border-radius: 50%;
@@ -41,6 +42,10 @@
     position: absolute;
     bottom: 2px;
     left: 25%
+}
+
+.quantity-btn:hover {
+    background-color: #ccccef;
 }
 
 .add {

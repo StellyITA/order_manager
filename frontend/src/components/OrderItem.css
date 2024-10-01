@@ -30,6 +30,16 @@
     place-self: center;
 }
 
+.order-item-edit {
+    background-color: #ddddff;
+    border: 1px solid gray;
+    border-radius: 4px;
+}
+
+.order-item-edit:hover {
+    background-color: #ccccef;
+}
+
 .order-item-delete {
     background-color: #ed3a2e;
     border: 1px solid #771d17;

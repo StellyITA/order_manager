@@ -10,6 +10,7 @@ function App() {
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [filterData, setFilter] = useState([]);
   const [orderData, setOrderData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [currentCategory, setCurrentCategory] = useState(0);
@@ -25,6 +26,7 @@ function App() {
       item.quantity = 0;
     });
     setData(menuData);
+    setFilter(menuData);
     setLoading(false);
   }
 
@@ -65,6 +67,16 @@ function App() {
     setOrderData(newData.filter(el => el["quantity"] > 0));
   }
 
+  function onSearch(event) {
+    const filterRegex = new RegExp(event.target.value, "i"); 
+    setFilter(
+      data.filter(
+        el => el["dish_name"].match(filterRegex)
+        || categories.filter(c => c.category_id === el.category)[0].category_name.match(filterRegex)
+      )
+    );
+  }
+
   useEffect(() => {
     getMenu();
     getCategories();
@@ -72,10 +84,16 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        Header
-      </header>
-      <div className='categories'>
+      <section>
+        <div className='input-wrapper'>
+          <input 
+            type='search' 
+            className='search-menu'
+            placeholder="Cerca per nome piatto o categoria..."
+            onChange={e => onSearch(e)}
+          />
+        </div>
+        <div className='categories'>
         <button 
           id='active'
           className='active'
@@ -92,9 +110,9 @@ function App() {
           )
         })}
       </div>
-      <div className='order-manager'>
+      
         {loading ? <div className="loader"/> : (<div className='display-menu'>
-          {data.map(el => {
+          {filterData.map(el => {
               if (currentCategory === 0 || el["category"] === currentCategory) {
                 return (
                   <MenuItem
@@ -112,7 +130,7 @@ function App() {
                 return null;
               }
           })}
-        </div>)}
+        </div>)}</section>
         <div id='order' className='order'>
           Ordine
           {orderData.map(el => {
@@ -135,7 +153,7 @@ function App() {
             : ""}</span>
             </p>
         </div>
-      </div>
+      
     </div>
   );
 }
