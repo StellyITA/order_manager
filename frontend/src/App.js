@@ -57,7 +57,8 @@ function App() {
       newData[i]["quantity"]++;
     } else if (event.target.className.match("subtract") !== null) {
       newData[i]["quantity"]--;
-    } else if (event.target.className.match("quantity-input") !== null) {
+    } else if (event.target.className.match("quantity-input") !== null
+                && event.target.value !== "") {
       newData[i]["quantity"] = event.target.value;
     } else if (event.target.className.match("delete") !== null) {
       newData[i]["quantity"] = 0;
