@@ -1,7 +1,7 @@
 import './App.css';
 
 import OrderItem from './components/OrderItem';
-import MenuItem from './components/MenuItem';
+import MenuDisplay from './components/MenuDisplay';
 import { useState, useEffect } from 'react';
 import { menuItemsData, categoriesData } from './Data';
 import { formatPriceString } from './UtilityFunctions';
@@ -13,7 +13,6 @@ function App() {
   const [filterData, setFilter] = useState([]);
   const [orderData, setOrderData] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [currentCategory, setCurrentCategory] = useState(0);
 
   async function getMenu() {
     const menuData = await menuItemsData();
@@ -33,15 +32,6 @@ function App() {
   async function getCategories() {
     const categories = await categoriesData();
     setCategories(categories);
-  }
-
-  function handleCategoryClick(event, category) {
-    const prev = document.getElementById('active');
-    prev.removeAttribute("id");
-    prev.setAttribute("class","unactive");
-    event.target.id = 'active';
-    event.target.className = "active";
-    setCurrentCategory(category);
   }
 
   function changeQuantity(event) {
@@ -78,16 +68,6 @@ function App() {
     setOrderData(newData.filter(el => el["quantity"] > 0));
   }
 
-  function onSearch(event) {
-    const filterRegex = new RegExp(event.target.value, "i"); 
-    setFilter(
-      data.filter(
-        el => el["dish_name"].match(filterRegex)
-        || categories.filter(c => c.category_id === el.category)[0].category_name.match(filterRegex)
-      )
-    );
-  }
-
   useEffect(() => {
     getMenu();
     getCategories();
@@ -95,53 +75,16 @@ function App() {
 
   return (
     <div className="App">
-      <section>
-        <div className='input-wrapper'>
-          <input 
-            type='search' 
-            className='search-menu'
-            placeholder="Cerca per nome piatto o categoria..."
-            onChange={e => onSearch(e)}
-          />
-        </div>
-        <div className='categories'>
-        <button 
-          id='active'
-          className='active'
-          key='All0'
-          onClick={(e) => handleCategoryClick(e,0)}
-        >Tutte le categorie</button>
-        {categories.map(el => {
-          return (
-            <button 
-              className='unactive'
-              key={el["category_name"] + el["category_id"]}
-              onClick={(e) => handleCategoryClick(e,el["category_id"])}
-            >{el["category_name"]}</button>
-          )
-        })}
-      </div>
-      
-        {loading ? <div className="loader"/> : (<div className='display-menu'>
-          {filterData.map(el => {
-              if (currentCategory === 0 || el["category"] === currentCategory) {
-                return (
-                  <MenuItem
-                    id={el["dish_id"]}
-                    name={el["dish_name"]}
-                    image={el["dish_image"]}
-                    price={el["price"]}
-                    available={el["available"]}
-                    quantity={el["quantity"]}
-                    key={el["dish_id"]}
-                    setQuantity={changeQuantity}
-                  />
-                )
-              } else {
-                return null;
-              }
-          })}
-        </div>)}</section>
+
+      <MenuDisplay
+        loading={loading}
+        data={data}
+        filterData={filterData}
+        categories={categories}
+        setFilter={setFilter}
+        changeQuantity={changeQuantity}
+      />
+
         <div id='order' className='order'>
           Ordine
           {orderData.map(el => {

@@ -18,6 +18,7 @@
     grid-column-start: 3;
     grid-column-end: 7;
     place-self: center;
+    padding: 5px;
 }
 
 .order-item-price {
