@@ -44,10 +44,10 @@
   border: 5px solid #e6a85c;
   border-top: 5px solid #bb8343;
   border-radius: 50%;
-  height: 10vh;
+  height: 10%;
   aspect-ratio: 1;
-  margin-top: 40vh;
-  margin-left: 40vw;
+  margin-top: 25%;
+  margin-left: 45%;
   animation: spin 1s linear infinite;
 }
 
